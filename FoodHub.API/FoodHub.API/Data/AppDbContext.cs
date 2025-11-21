@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoodHub.API.Data
 {
-	public class FoodHubContext : DbContext
+	public class AppDbContext : DbContext
 	{
-		public FoodHubContext(DbContextOptions<FoodHubContext> options) : base(options)
+		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 		{
 		}
 

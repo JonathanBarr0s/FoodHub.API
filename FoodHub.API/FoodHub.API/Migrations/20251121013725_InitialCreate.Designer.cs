@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FoodHub.API.Migrations
 {
-    [DbContext(typeof(FoodHubContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20251121013725_InitialCreate")]
     partial class InitialCreate
     {
