@@ -1,5 +1,8 @@
-﻿namespace FoodHub.API.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FoodHub.API.Entities
 {
+	[Table("FoodHub_Dish")]
 	public class Dish
 	{
 		public int Id { get; set; }
