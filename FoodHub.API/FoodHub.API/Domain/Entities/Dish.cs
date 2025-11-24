@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using FoodHub.API.Domain.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FoodHub.API.Entities
+namespace FoodHub.API.Domain.Entities
 {
 	[Table("FoodHub_Dish")]
-	public class Dish
+	public class Dish : BaseEntity
 	{
-		public int Id { get; set; }
 		public string Name { get; set; } = string.Empty;
 		public decimal Price { get; set; }
 		

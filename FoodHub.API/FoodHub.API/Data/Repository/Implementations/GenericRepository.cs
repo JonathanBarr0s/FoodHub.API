@@ -1,9 +1,11 @@
-﻿using FoodHub.API.Data.Repository.Interfaces;
+﻿using FoodHub.API.Data.Context;
+using FoodHub.API.Data.Repository.Interfaces;
+using FoodHub.API.Domain.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodHub.API.Data.Repository.Implementations
 {
-	public class GenericRepository<T> : IRepository<T> where T : class
+	public class GenericRepository<T> : IRepository<T> where T : BaseEntity
 	{
 		private readonly AppDbContext _context;
 		private readonly DbSet<T> _dbSet;

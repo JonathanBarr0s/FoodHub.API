@@ -1,4 +1,6 @@
-using FoodHub.API.Data;
+using FoodHub.API.Business.Implementations;
+using FoodHub.API.Business.Interfaces;
+using FoodHub.API.Data.Context;
 using FoodHub.API.Data.Repository.Implementations;
 using FoodHub.API.Data.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IDishService, DishService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 
 var app = builder.Build();
 

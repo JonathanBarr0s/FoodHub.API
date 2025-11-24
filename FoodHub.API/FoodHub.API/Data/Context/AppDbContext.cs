@@ -1,7 +1,7 @@
-﻿using FoodHub.API.Entities;
+﻿using FoodHub.API.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodHub.API.Data
+namespace FoodHub.API.Data.Context
 {
 	public class AppDbContext : DbContext
 	{

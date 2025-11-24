@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using FoodHub.API.Domain.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FoodHub.API.Entities
+namespace FoodHub.API.Domain.Entities
 {
 	[Table("FoodHub_Order")]
-	public class Order
+	public class Order : BaseEntity
 	{
-		public int Id { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 		
 		public int UserId { get; set; }
