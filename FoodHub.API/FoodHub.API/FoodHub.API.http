@@ -1,6 +1,6 @@
 @FoodHub.API_HostAddress = http://localhost:5280
 
-GET {{FoodHub.API_HostAddress}}/weatherforecast/
+GET {{FoodHub.API_HostAddress}}/swagger/index.html
 Accept: application/json
 
 ###
