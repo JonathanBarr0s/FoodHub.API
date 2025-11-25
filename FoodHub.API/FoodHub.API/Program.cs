@@ -1,8 +1,12 @@
+using AutoMapper;
 using FoodHub.API.Business.Implementations;
 using FoodHub.API.Business.Interfaces;
 using FoodHub.API.Data.Context;
 using FoodHub.API.Data.Repository.Implementations;
 using FoodHub.API.Data.Repository.Interfaces;
+using FoodHub.API.Domain.Entities;
+using FoodHub.API.Dtos.Restaurant;
+using FoodHub.API.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +16,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
