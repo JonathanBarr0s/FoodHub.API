@@ -1,6 +1,6 @@
 ﻿using FoodHub.API.Domain.Entities;
 
-namespace FoodHub.API.Business.Interfaces
+namespace FoodHub.API.Services.Interfaces
 {
 	public interface IOrderItemService : IService<OrderItem>
 	{

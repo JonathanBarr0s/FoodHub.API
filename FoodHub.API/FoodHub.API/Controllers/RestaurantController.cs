@@ -1,58 +1,50 @@
 ﻿using FoodHub.API.Data.Repository.Interfaces;
 using FoodHub.API.Domain.Entities;
+using FoodHub.API.Dtos.Restaurant;
+using FoodHub.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodHub.API.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	public class RestaurantController : ControllerBase
 	{
-		private readonly IRepository<Restaurant> _repository;
+		private readonly IRestaurantService _service;
 
-		public RestaurantController(IRepository<Restaurant> repository)
+		public RestaurantController(IRestaurantService service)
 		{
-			_repository = repository;
+			_service = service;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{
-			var restaurants = await _repository.GetAllAsync();
-			return Ok(restaurants);
+			return Ok(await _service.GetAllAsync());
 		}
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
-			var restaurants = await _repository.GetByIdAsync(id);
-			if (restaurants == null)
+			var result = await _service.GetByIdAsync(id);
+			if (result == null)
 				return NotFound();
-
-			return Ok(restaurants);
+			return Ok(result);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(Restaurant restaurant)
+		public async Task<IActionResult> Create(RestaurantCreateDto dto)
 		{
-			await _repository.AddAsync(restaurant);
-			await _repository.SaveChangesAsync();
-
-			return CreatedAtAction(nameof(GetById), new { id = restaurant.Id }, restaurant);
+			var created = await _service.AddAsync(dto);
+			return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> Update(int id, Restaurant restaurant)
+		public async Task<IActionResult> Update(int id, RestaurantUpdateDto dto)
 		{
-			var existing = await _repository.GetByIdAsync(id);
-			if (existing == null)
+			var updated = await _service.UpdateAsync(id, dto);
+			if (!updated)
 				return NotFound();
-
-			existing.Name = restaurant.Name;
-			existing.Address = restaurant.Address;
-
-			_repository.Update(existing);
-			await _repository.SaveChangesAsync();
 
 			return NoContent();
 		}
@@ -60,12 +52,9 @@ namespace FoodHub.API.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)
 		{
-			var restaurant = await _repository.GetByIdAsync(id);
-			if (restaurant == null)
+			var deleted = await _service.DeleteAsync(id);
+			if (!deleted)
 				return NotFound();
-
-			_repository.Delete(restaurant);
-			await _repository.SaveChangesAsync();
 
 			return NoContent();
 		}

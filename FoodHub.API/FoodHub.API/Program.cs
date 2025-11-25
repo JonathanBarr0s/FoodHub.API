@@ -1,11 +1,8 @@
-using AutoMapper;
-using FoodHub.API.Business.Implementations;
-using FoodHub.API.Business.Interfaces;
+using FoodHub.API.Services.Implementations;
+using FoodHub.API.Services.Interfaces;
 using FoodHub.API.Data.Context;
 using FoodHub.API.Data.Repository.Implementations;
 using FoodHub.API.Data.Repository.Interfaces;
-using FoodHub.API.Domain.Entities;
-using FoodHub.API.Dtos.Restaurant;
 using FoodHub.API.Mappings;
 using Microsoft.EntityFrameworkCore;
 

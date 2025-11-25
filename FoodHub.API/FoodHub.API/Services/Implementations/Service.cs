@@ -1,8 +1,8 @@
-﻿using FoodHub.API.Business.Interfaces;
+﻿using FoodHub.API.Services.Interfaces;
 using FoodHub.API.Data.Repository.Interfaces;
 using FoodHub.API.Domain.Base;
 
-namespace FoodHub.API.Business.Implementations
+namespace FoodHub.API.Services.Implementations
 {
 	public class Service<T> : IService<T> where T : BaseEntity
 	{

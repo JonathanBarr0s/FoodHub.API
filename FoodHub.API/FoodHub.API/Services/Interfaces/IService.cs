@@ -1,6 +1,6 @@
 ﻿using FoodHub.API.Domain.Base;
 
-namespace FoodHub.API.Business.Interfaces
+namespace FoodHub.API.Services.Interfaces
 {
 	public interface IService<T> where T : BaseEntity
 	{
