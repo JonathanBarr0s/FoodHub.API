@@ -3,7 +3,6 @@ using System;
 using FoodHub.API.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,11 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FoodHub.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251121013725_InitialCreate")]
-    partial class InitialCreate
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace FoodHub.API.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FoodHub.API.Entities.Dish", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Dish", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +47,7 @@ namespace FoodHub.API.Migrations
                     b.ToTable("FoodHub_Dish");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.Order", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,7 +73,7 @@ namespace FoodHub.API.Migrations
                     b.ToTable("FoodHub_Order");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.OrderItem", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +102,7 @@ namespace FoodHub.API.Migrations
                     b.ToTable("FoodHub_OrderItem");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.Restaurant", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Restaurant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +123,7 @@ namespace FoodHub.API.Migrations
                     b.ToTable("FoodHub_Restaurant");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.User", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,14 +139,18 @@ namespace FoodHub.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("FoodHub_User");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.Dish", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Dish", b =>
                 {
-                    b.HasOne("FoodHub.API.Entities.Restaurant", "Restaurant")
+                    b.HasOne("FoodHub.API.Domain.Entities.Restaurant", "Restaurant")
                         .WithMany("Dishes")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,15 +159,15 @@ namespace FoodHub.API.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.Order", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("FoodHub.API.Entities.Restaurant", "Restaurant")
+                    b.HasOne("FoodHub.API.Domain.Entities.Restaurant", "Restaurant")
                         .WithMany("Orders")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FoodHub.API.Entities.User", "User")
+                    b.HasOne("FoodHub.API.Domain.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -177,15 +178,15 @@ namespace FoodHub.API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.OrderItem", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("FoodHub.API.Entities.Dish", "Dish")
+                    b.HasOne("FoodHub.API.Domain.Entities.Dish", "Dish")
                         .WithMany()
                         .HasForeignKey("DishId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FoodHub.API.Entities.Order", "Order")
+                    b.HasOne("FoodHub.API.Domain.Entities.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -196,19 +197,19 @@ namespace FoodHub.API.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.Order", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.Restaurant", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.Restaurant", b =>
                 {
                     b.Navigation("Dishes");
 
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("FoodHub.API.Entities.User", b =>
+            modelBuilder.Entity("FoodHub.API.Domain.Entities.User", b =>
                 {
                     b.Navigation("Orders");
                 });

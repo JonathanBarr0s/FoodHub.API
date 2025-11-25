@@ -33,7 +33,8 @@ namespace FoodHub.API.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FullName = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false)
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,8 +48,8 @@ namespace FoodHub.API.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-					Price = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
-					RestaurantId = table.Column<int>(type: "integer", nullable: false)
+                    Price = table.Column<decimal>(type: "numeric(10,2)", nullable: false),
+                    RestaurantId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
