@@ -1,9 +1,11 @@
-using FoodHub.API.Services.Implementations;
-using FoodHub.API.Services.Interfaces;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using FoodHub.API.Data.Context;
 using FoodHub.API.Data.Repository.Implementations;
 using FoodHub.API.Data.Repository.Interfaces;
 using FoodHub.API.Mappings;
+using FoodHub.API.Services.Implementations;
+using FoodHub.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,9 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
