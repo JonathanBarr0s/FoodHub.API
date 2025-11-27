@@ -45,5 +45,11 @@ namespace FoodHub.API.Data.Repository.Implementations
 		{
 			_dbSet.Update(entity);
 		}
+
+		public IQueryable<T> Query()
+		{
+			return _dbSet.AsQueryable();
+		}
+
 	}
 }

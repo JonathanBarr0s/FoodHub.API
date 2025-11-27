@@ -10,5 +10,6 @@ namespace FoodHub.API.Data.Repository.Interfaces
 		void Update(T entity);
 		void Delete(T entity);
 		Task<bool> SaveChangesAsync();
+		IQueryable<T> Query();
 	}
 }

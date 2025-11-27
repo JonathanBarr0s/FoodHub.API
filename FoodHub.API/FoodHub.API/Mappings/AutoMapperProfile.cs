@@ -29,9 +29,11 @@ namespace FoodHub.API.Mappings
 
 			// Order
 			CreateMap<Order, OrderDto>();
+			CreateMap<Order, OrderDetailDto>();
 
 			// OrderItem
 			CreateMap<OrderItem, OrderItemDto>();
+			CreateMap<OrderItem, OrderItemDetailDto>();
 		}
 	}
 }

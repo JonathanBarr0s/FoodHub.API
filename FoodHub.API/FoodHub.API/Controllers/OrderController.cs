@@ -1,4 +1,5 @@
 ﻿using FoodHub.API.Dtos.Order;
+using FoodHub.API.Services.Implementations;
 using FoodHub.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,13 @@ namespace FoodHub.API.Controllers
 		public async Task<IActionResult> GetAll()
 		{
 			return Ok(await _service.GetAllAsync());
+		}
+
+		[HttpGet("with-items")]
+		public async Task<IActionResult> GetAllWithItemsAsync()
+		{
+			var result = await _service.GetAllWithItemsAsync();
+			return Ok(result);
 		}
 
 		[HttpGet("{id}")]

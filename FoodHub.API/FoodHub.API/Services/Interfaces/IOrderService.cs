@@ -10,5 +10,6 @@ namespace FoodHub.API.Services.Interfaces
 		Task<OrderDto> AddAsync(OrderCreateDto dto);
 		Task<bool> UpdateAsync(int id, OrderUpdateDto dto);
 		Task<bool> DeleteAsync(int id);
+		Task<IEnumerable<OrderDetailDto>> GetAllWithItemsAsync();
 	}
 }

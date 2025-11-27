@@ -3,6 +3,7 @@ using FoodHub.API.Data.Repository.Interfaces;
 using FoodHub.API.Domain.Entities;
 using FoodHub.API.Dtos.Order;
 using FoodHub.API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodHub.API.Services.Implementations
 {
@@ -63,5 +64,19 @@ namespace FoodHub.API.Services.Implementations
 
 			return await _repository.SaveChangesAsync();
 		}
+
+		public async Task<IEnumerable<OrderDetailDto>> GetAllWithItemsAsync()
+		{
+			var orders = await _repository.Query()
+				.Include(o => o.User)
+				.Include(o => o.Restaurant)
+				.Include(o => o.Items)
+					.ThenInclude(i => i.Dish)
+				.ToListAsync();
+
+			return _mapper.Map<IEnumerable<OrderDetailDto>>(orders);
+		}
+
+
 	}
 }
