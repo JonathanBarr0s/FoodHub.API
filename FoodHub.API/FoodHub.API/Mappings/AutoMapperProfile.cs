@@ -12,28 +12,31 @@ namespace FoodHub.API.Mappings
 	{
 		public AutoMapperProfile()
 		{
-			// Restaurant
 			CreateMap<Restaurant, RestaurantDto>();
 			CreateMap<RestaurantCreateDto, Restaurant>();
 			CreateMap<RestaurantUpdateDto, Restaurant>();
 
-			// Dish
 			CreateMap<Dish, DishDto>();
 			CreateMap<DishCreateDto, Dish>();
 			CreateMap<DishUpdateDto, Dish>();
 
-			// User
 			CreateMap<User, UserDto>();
 			CreateMap<UserCreateDto, User>();
 			CreateMap<UserUpdateDto, User>();
 
-			// Order
-			CreateMap<Order, OrderDto>();
 			CreateMap<Order, OrderDetailDto>();
 
-			// OrderItem
-			CreateMap<OrderItem, OrderItemDto>();
 			CreateMap<OrderItem, OrderItemDetailDto>();
+
+			CreateMap<OrderCreateDto, Order>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore())
+				.ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+				.ForMember(dest => dest.Items, opt => opt.Ignore()); 
+
+			CreateMap<OrderAddItemDto, OrderItem>()
+				.ForMember(dest => dest.Id, opt => opt.Ignore())
+				.ForMember(dest => dest.OrderId, opt => opt.Ignore())     
+				.ForMember(dest => dest.UnitPrice, opt => opt.Ignore());  
 		}
 	}
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FoodHub.API.Controllers
 {
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	public class RestaurantController : ControllerBase
 	{
 		private readonly IRestaurantService _service;

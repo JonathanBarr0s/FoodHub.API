@@ -9,5 +9,4 @@ namespace FoodHub.API.Dtos.OrderItem
 
 		public DishDto Dish { get; set; }
 	}
-
 }

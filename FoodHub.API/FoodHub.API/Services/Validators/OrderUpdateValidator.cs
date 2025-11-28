@@ -4,12 +4,12 @@ using FoodHub.API.Dtos.Order;
 
 namespace FoodHub.API.Services.Validators
 {
-	public class OrderUpdateValidator : AbstractValidator<OrderUpdateDto>
-	{
-		public OrderUpdateValidator()
-		{
-			RuleFor(x => x.RestaurantId)
-				.NotEmpty().WithMessage("Restaurant is required.");
-		}
-	}
+	//public class OrderUpdateValidator : AbstractValidator<OrderUpdateDto>
+	//{
+	//	public OrderUpdateValidator()
+	//	{
+	//		RuleFor(x => x.RestaurantId)
+	//			.NotEmpty().WithMessage("Restaurant is required.");
+	//	}
+	//}
 }

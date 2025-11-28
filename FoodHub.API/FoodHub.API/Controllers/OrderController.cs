@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FoodHub.API.Controllers
 {
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	public class OrderController : ControllerBase
 	{
 		private readonly IOrderService _service;
@@ -17,15 +17,9 @@ namespace FoodHub.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAll()
+		public async Task<IActionResult> GetAllAsync()
 		{
-			return Ok(await _service.GetAllAsync());
-		}
-
-		[HttpGet("with-items")]
-		public async Task<IActionResult> GetAllWithItemsAsync()
-		{
-			var result = await _service.GetAllWithItemsAsync();
+			var result = await _service.GetAllAsync();
 			return Ok(result);
 		}
 
@@ -35,23 +29,24 @@ namespace FoodHub.API.Controllers
 			var result = await _service.GetByIdAsync(id);
 			if (result == null)
 				return NotFound();
+
 			return Ok(result);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(OrderCreateDto dto)
+		public async Task<IActionResult> Create([FromBody] OrderCreateDto dto)
 		{
-			var created = await _service.AddAsync(dto);
-			return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+			var order = await _service.CreateAsync(dto);
+			return Ok(order);
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> Update(int id, OrderUpdateDto dto)
+		public async Task<IActionResult> AddItem(int id, [FromBody] OrderAddItemDto dto)
 		{
-			var updated = await _service.UpdateAsync(id, dto);
-			if (!updated)
-				return NotFound();
-			return NoContent();
+			dto.OrderId = id;
+
+			var updated = await _service.AddItemAsync(dto);
+			return Ok(updated);
 		}
 
 		[HttpDelete("{id}")]
@@ -60,6 +55,7 @@ namespace FoodHub.API.Controllers
 			var deleted = await _service.DeleteAsync(id);
 			if (!deleted)
 				return NotFound();
+
 			return NoContent();
 		}
 	}

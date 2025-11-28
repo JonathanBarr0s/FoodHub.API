@@ -10,62 +10,23 @@ namespace FoodHub.API.Services.Implementations
 	public class OrderService : IOrderService
 	{
 		private readonly IRepository<Order> _repository;
+		private readonly IRepository<OrderItem> _orderItemRepository;
+		private readonly IRepository<Dish> _dishRepository;
 		private readonly IMapper _mapper;
 
-		public OrderService(IRepository<Order> repository, IMapper mapper)
+		public OrderService(
+			IRepository<Order> repository,
+			IRepository<OrderItem> orderItemRepository,
+			IRepository<Dish> dishRepository,
+			IMapper mapper)
 		{
 			_repository = repository;
+			_orderItemRepository = orderItemRepository;
+			_dishRepository = dishRepository;
 			_mapper = mapper;
 		}
 
-		public async Task<IEnumerable<OrderDto>> GetAllAsync()
-		{
-			var orders = await _repository.GetAllAsync();
-			return _mapper.Map<IEnumerable<OrderDto>>(orders);
-		}
-
-		public async Task<OrderDto?> GetByIdAsync(int id)
-		{
-			var order = await _repository.GetByIdAsync(id);
-			if (order == null)
-				return null;
-
-			return _mapper.Map<OrderDto>(order);
-		}
-
-		public async Task<OrderDto> AddAsync(OrderCreateDto dto)
-		{
-			var order = _mapper.Map<Order>(dto);
-			await _repository.AddAsync(order);
-			await _repository.SaveChangesAsync();
-
-			return _mapper.Map<OrderDto>(order);
-		}
-
-		public async Task<bool> UpdateAsync(int id, OrderUpdateDto dto)
-		{
-			var order = await _repository.GetByIdAsync(id);
-			if (order == null)
-				return false;
-
-			_mapper.Map(dto, order);
-			_repository.Update(order);
-
-			return await _repository.SaveChangesAsync();
-		}
-
-		public async Task<bool> DeleteAsync(int id)
-		{
-			var order = await _repository.GetByIdAsync(id);
-			if (order == null)
-				return false;
-
-			_repository.Delete(order);
-
-			return await _repository.SaveChangesAsync();
-		}
-
-		public async Task<IEnumerable<OrderDetailDto>> GetAllWithItemsAsync()
+		public async Task<IEnumerable<OrderDetailDto>> GetAllAsync()
 		{
 			var orders = await _repository.Query()
 				.Include(o => o.User)
@@ -77,6 +38,107 @@ namespace FoodHub.API.Services.Implementations
 			return _mapper.Map<IEnumerable<OrderDetailDto>>(orders);
 		}
 
+		public async Task<OrderDetailDto> AddItemAsync(OrderAddItemDto dto)
+		{
+			if (dto == null)
+				throw new ArgumentNullException(nameof(dto));
+			if (dto.Quantity <= 0)
+				throw new InvalidOperationException("Quantity must be greater than zero.");
 
+			var order = await _repository.Query()
+				.Include(o => o.Items)
+				.FirstOrDefaultAsync(o => o.Id == dto.OrderId)
+				?? throw new InvalidOperationException("Order not found.");
+
+			var dish = await _dishRepository.GetByIdAsync(dto.DishId)
+				?? throw new InvalidOperationException("Dish not found.");
+
+			if (dish.RestaurantId != order.RestaurantId)
+				throw new InvalidOperationException("Dish does not belong to the restaurant of the order.");
+
+			var item = new OrderItem
+			{
+				OrderId = order.Id,
+				DishId = dto.DishId,
+				Quantity = dto.Quantity,
+				UnitPrice = dish.Price
+			};
+
+			await _orderItemRepository.AddAsync(item);
+			await _repository.SaveChangesAsync();
+
+			var detailed = await _repository.Query()
+				.Include(o => o.User)
+				.Include(o => o.Restaurant)
+				.Include(o => o.Items)
+					.ThenInclude(i => i.Dish)
+				.FirstAsync(o => o.Id == order.Id);
+
+			return _mapper.Map<OrderDetailDto>(detailed);
+		}
+
+		public async Task<OrderDetailDto?> GetByIdAsync(int id)
+		{
+			var order = await _repository.Query()
+				.Include(o => o.User)
+				.Include(o => o.Restaurant)
+				.Include(o => o.Items)
+					.ThenInclude(i => i.Dish)
+				.FirstOrDefaultAsync(o => o.Id == id);
+
+			return order == null
+				? null
+				: _mapper.Map<OrderDetailDto>(order);
+		}
+
+		public async Task<OrderDetailDto> CreateAsync(OrderCreateDto dto)
+		{
+			if (dto == null)
+				throw new ArgumentNullException(nameof(dto));
+			if (dto.Quantity <= 0)
+				throw new InvalidOperationException("Quantity must be greater than zero.");
+
+			var dish = await _dishRepository.GetByIdAsync(dto.DishId)
+				?? throw new InvalidOperationException("Dish not found.");
+
+			if (dish.RestaurantId != dto.RestaurantId)
+				throw new InvalidOperationException("Dish does not belong to the informed restaurant.");
+
+			var order = new Order
+			{
+				UserId = dto.UserId,
+				RestaurantId = dto.RestaurantId,
+				Items = new List<OrderItem>()
+			};
+
+			order.Items.Add(new OrderItem
+			{
+				DishId = dto.DishId,
+				Quantity = dto.Quantity,
+				UnitPrice = dish.Price
+			});
+
+			await _repository.AddAsync(order);
+			await _repository.SaveChangesAsync();
+
+			var detailed = await _repository.Query()
+				.Include(o => o.User)
+				.Include(o => o.Restaurant)
+				.Include(o => o.Items)
+					.ThenInclude(i => i.Dish)
+				.FirstAsync(o => o.Id == order.Id);
+
+			return _mapper.Map<OrderDetailDto>(detailed);
+		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			var order = await _repository.GetByIdAsync(id);
+			if (order == null)
+				return false;
+
+			_repository.Delete(order);
+			return await _repository.SaveChangesAsync();
+		}		
 	}
 }

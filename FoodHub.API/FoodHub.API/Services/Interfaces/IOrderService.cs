@@ -5,11 +5,10 @@ namespace FoodHub.API.Services.Interfaces
 {
 	public interface IOrderService
 	{
-		Task<IEnumerable<OrderDto>> GetAllAsync();
-		Task<OrderDto?> GetByIdAsync(int id);
-		Task<OrderDto> AddAsync(OrderCreateDto dto);
-		Task<bool> UpdateAsync(int id, OrderUpdateDto dto);
+		Task<IEnumerable<OrderDetailDto>> GetAllAsync();
+		Task<OrderDetailDto?> GetByIdAsync(int id);
+		Task<OrderDetailDto> CreateAsync(OrderCreateDto dto);
+		Task<OrderDetailDto> AddItemAsync(OrderAddItemDto dto);
 		Task<bool> DeleteAsync(int id);
-		Task<IEnumerable<OrderDetailDto>> GetAllWithItemsAsync();
 	}
 }
