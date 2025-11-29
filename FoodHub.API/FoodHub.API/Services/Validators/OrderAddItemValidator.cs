@@ -3,18 +3,10 @@ using FoodHub.API.Dtos.Order;
 
 namespace FoodHub.API.Services.Validators
 {
-	public class OrderCreateValidator : AbstractValidator<OrderCreateDto>
+	public class OrderAddItemValidator : AbstractValidator<OrderAddItemDto>
 	{
-		public OrderCreateValidator()
+		public OrderAddItemValidator()
 		{
-			RuleFor(x => x.UserId)
-				.NotEmpty().WithMessage("UserId is required")
-				.GreaterThan(0).WithMessage("UserId must be valid");
-
-			RuleFor(x => x.RestaurantId)
-				.NotEmpty().WithMessage("RestaurantId is required")
-				.GreaterThan(0).WithMessage("RestaurantId must be valid");
-
 			RuleFor(x => x.DishId)
 				.NotEmpty().WithMessage("DishId is required")
 				.GreaterThan(0).WithMessage("DishId must be valid");

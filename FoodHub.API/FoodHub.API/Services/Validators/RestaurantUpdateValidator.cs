@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FoodHub.API.Dtos.Restaurant;
+using System.Net;
 
 namespace FoodHub.API.Services.Validators
 {
@@ -9,11 +10,12 @@ namespace FoodHub.API.Services.Validators
 		{
 			RuleFor(x => x.Name)
 				.NotEmpty().WithMessage("Name is required")
-				.MaximumLength(100).WithMessage("Name must be less than 100 characters");
+				.NotEqual("string").WithMessage("Name must be valid");
 
 			RuleFor(x => x.Address)
 				.NotEmpty().WithMessage("Address is required")
-				.MaximumLength(200).WithMessage("Address must be less than 200 characters");
+				.Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("Address is required")
+				.NotEqual("string").WithMessage("Address must be valid");
 		}
 	}
 }

@@ -26,7 +26,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();

@@ -9,12 +9,15 @@ namespace FoodHub.API.Services.Validators
 		{
 			RuleFor(x => x.Name)
 				.NotEmpty().WithMessage("Name is required")
-				.MaximumLength(100).WithMessage("Name must be less than 100 characters");
+				.Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("Name is required")
+				.NotEqual("string").WithMessage("Name must be valid");
 
 			RuleFor(x => x.Price)
+				.NotEmpty().WithMessage("Price is required")
 				.GreaterThan(0).WithMessage("Price must be greater than zero");
 
 			RuleFor(x => x.RestaurantId)
+				.NotEmpty().WithMessage("RestaurantId is required")
 				.GreaterThan(0).WithMessage("RestaurantId must be valid");
 		}
 	}

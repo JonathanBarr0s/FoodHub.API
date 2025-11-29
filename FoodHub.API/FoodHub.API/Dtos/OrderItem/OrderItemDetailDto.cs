@@ -1,4 +1,5 @@
 ﻿using FoodHub.API.Dtos.Dish;
+using FoodHub.API.Dtos.Order;
 
 namespace FoodHub.API.Dtos.OrderItem
 {
@@ -7,6 +8,6 @@ namespace FoodHub.API.Dtos.OrderItem
 		public int Quantity { get; set; }
 		public decimal UnitPrice { get; set; }
 
-		public DishDto Dish { get; set; }
+		public OrderDishDto Dish { get; set; }
 	}
 }
