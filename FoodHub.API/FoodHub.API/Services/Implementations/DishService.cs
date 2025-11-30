@@ -9,13 +9,16 @@ namespace FoodHub.API.Services.Implementations
 	public class DishService : IDishService
 	{
 		private readonly IRepository<Dish> _repository;
+		private readonly IRepository<Restaurant> _restaurantRepository;
 		private readonly IMapper _mapper;
 
 		public DishService(
 			IRepository<Dish> repository,
+			IRepository<Restaurant> restaurantRepository,
 			IMapper mapper)
 		{
 			_repository = repository;
+			_restaurantRepository = restaurantRepository;
 			_mapper = mapper;
 		}
 
@@ -36,6 +39,13 @@ namespace FoodHub.API.Services.Implementations
 
 		public async Task<DishDto> AddAsync(DishCreateDto dto)
 		{
+			if (dto == null)
+				throw new ArgumentNullException(nameof(dto));
+
+			var restaurant = await _restaurantRepository.GetByIdAsync(dto.RestaurantId);
+			if (restaurant == null)
+				throw new InvalidOperationException("Restaurant does not exist.");
+
 			var entity = _mapper.Map<Dish>(dto);
 
 			await _repository.AddAsync(entity);

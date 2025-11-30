@@ -36,18 +36,34 @@ namespace FoodHub.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create([FromBody] OrderCreateDto dto)
 		{
-			var order = await _service.CreateAsync(dto);
-			return Ok(order);
+			try
+			{
+				var order = await _service.CreateAsync(dto);
+				return Ok(order);
+			} catch (InvalidOperationException ex)
+			{
+
+				return BadRequest(new { error = ex.Message });
+			}
 		}
 
 		[HttpPut("{id}")]
 		public async Task<IActionResult> AddItem(int id, [FromBody] OrderAddItemDto dto)
 		{
-			dto.OrderId = id;
+			try
+			{
+				dto.OrderId = id;
 
-			var updated = await _service.AddItemAsync(dto);
-			return Ok(updated);
+				var result = await _service.AddItemAsync(dto);
+
+				return Ok(result);
+
+			} catch (InvalidOperationException ex)
+			{
+				return BadRequest(new { error = ex.Message });
+			}
 		}
+
 
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> Delete(int id)

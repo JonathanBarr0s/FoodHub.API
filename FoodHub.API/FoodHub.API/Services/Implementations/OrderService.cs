@@ -14,18 +14,24 @@ namespace FoodHub.API.Services.Implementations
 	{
 		private readonly IRepository<Order> _repository;
 		private readonly IRepository<OrderItem> _orderItemRepository;
+		private readonly IRepository<Restaurant> _restaurantRepository;
 		private readonly IRepository<Dish> _dishRepository;
+		private readonly IRepository<User> _userRepository;
 		private readonly IMapper _mapper;
 
 		public OrderService(
 			IRepository<Order> repository,
 			IRepository<OrderItem> orderItemRepository,
-			IRepository<Dish> dishRepository,
+			IRepository<Restaurant> restaurantRepository,
+		IRepository<Dish> dishRepository,
+			IRepository<User> userRepository,
 			IMapper mapper)
 		{
 			_repository = repository;
 			_orderItemRepository = orderItemRepository;
+			_restaurantRepository = restaurantRepository;
 			_dishRepository = dishRepository;
+			_userRepository = userRepository;
 			_mapper = mapper;
 		}
 
@@ -57,8 +63,15 @@ namespace FoodHub.API.Services.Implementations
 		{
 			if (dto == null)
 				throw new ArgumentNullException(nameof(dto));
+
 			if (dto.Quantity <= 0)
 				throw new InvalidOperationException("Quantity must be greater than zero.");
+
+			var user = await _userRepository.GetByIdAsync(dto.UserId)
+				?? throw new InvalidOperationException("User not found.");
+
+			var restaurant = await _restaurantRepository.GetByIdAsync(dto.RestaurantId)
+				?? throw new InvalidOperationException("Restaurant not found.");
 
 			var dish = await _dishRepository.GetByIdAsync(dto.DishId)
 				?? throw new InvalidOperationException("Dish not found.");

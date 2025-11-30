@@ -34,8 +34,14 @@ namespace FoodHub.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(DishCreateDto dto)
 		{
-			var created = await _service.AddAsync(dto);
-			return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+			try
+			{
+				var dish = await _service.AddAsync(dto);
+				return Ok(dish);
+			} catch (InvalidOperationException ex)
+			{
+				return BadRequest(new { error = ex.Message });
+			}
 		}
 
 		[HttpPut("{id}")]
