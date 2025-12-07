@@ -7,13 +7,14 @@ using FoodHub.API.Mappings;
 using FoodHub.API.Services.Implementations;
 using FoodHub.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -26,7 +27,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IDishService, DishService>();
@@ -41,9 +41,17 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+	c.SwaggerEndpoint("/swagger/v1/swagger.json", "FoodHub API v1");
+	c.RoutePrefix = string.Empty; 
+});
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsProduction())
+{
+	app.UseHttpsRedirection();
+}
+
 app.UseAuthorization();
 
 app.MapControllers();
