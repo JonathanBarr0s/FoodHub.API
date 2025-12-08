@@ -1,5 +1,7 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using FoodHub.API.Configurations;
+using FoodHub.API.Configurations.OpenApi;
 using FoodHub.API.Data.Context;
 using FoodHub.API.Data.Repository.Implementations;
 using FoodHub.API.Data.Repository.Interfaces;
@@ -7,15 +9,13 @@ using FoodHub.API.Mappings;
 using FoodHub.API.Services.Implementations;
 using FoodHub.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDocumentation();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -40,12 +40,7 @@ using (var scope = app.Services.CreateScope())
 	db.Database.Migrate();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-	c.SwaggerEndpoint("/swagger/v1/swagger.json", "FoodHub API v1");
-	c.RoutePrefix = string.Empty; 
-});
+app.UseSwaggerDocumentation();
 
 if (!app.Environment.IsProduction())
 {
