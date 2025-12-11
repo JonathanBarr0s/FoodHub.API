@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-namespace FoodHub.API.Configurations
+﻿namespace FoodHub.API.Configurations
 {
 	public static class SwaggerAppConfig
 	{
