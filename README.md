@@ -259,7 +259,7 @@ https://foodhub-api-q7dx.onrender.com
 Se você estiver rodando a API em um container Docker local, o Swagger ficará acessível através de:
 
 ```
-http://localhost:8080/swagger/v1/swagger.json
+http://localhost:8080/index.html
 ```
 
 #### 5.2.3 Localmente via Visual Studio
@@ -267,7 +267,7 @@ http://localhost:8080/swagger/v1/swagger.json
 Quando você roda o projeto localmente, o Swagger fica disponível em:
 
 ```
-https://localhost:7209/index.html
+http://localhost:8080/index.html
 ```
 
 ### 5.3 Testando as rotas
