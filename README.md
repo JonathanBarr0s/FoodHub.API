@@ -15,14 +15,9 @@
 
 A **FoodHub API** é uma aplicação desenvolvida em **ASP.NET Core**, projetada para gerenciar restaurantes, pratos e pedidos. Ela fornece endpoints para criação, consulta e atualização de dados.
 
-🔗 **Acesse a API em produção:**
+🔗 **Acesse a API: https://foodhub-api-q7dx.onrender.com**
 
-<div align="center">
-
-👉  **https://foodhub-api-q7dx.onrender.com**  👈
-
-
-</div>
+🐳 **Docker Image: https://hub.docker.com/r/jonathanbarr0s/food-hub-api**
 
 ###### *Nota: Esta API pode levar até 50 segundos para inicializar na primeira requisição. Isso ocorre porque ela está hospedada no plano gratuito do Render, que hiberna a aplicação quando fica inativa.*
 
@@ -246,7 +241,7 @@ O Postman irá gerar automaticamente:
 
 Abaixo estão as URLs conforme o ambiente que você deseja consumir. Altere em Environments > FoodHub.API Environment.
 
-#### 5.2.1 Render (produção)
+#### 5.2.1 Render
 
 Use esta URL para importar e testar a API hospedada no Render:
 
